@@ -295,8 +295,9 @@ open class LLM: ObservableObject {
         if !letters.isEmpty { output.yield(found ? String(cString: letters + [0]) : word) }
         return true
     }
-    
-    func getResponse(from input: String) -> AsyncStream<String> {
+
+    @InferenceActor
+    public func getResponse(from input: String) -> AsyncStream<String> {
         .init { output in Task {
             defer { context = nil }
             guard prepare(from: input, to: output) else { return output.finish() }
